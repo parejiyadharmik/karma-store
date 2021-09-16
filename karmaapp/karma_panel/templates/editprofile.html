@@ -1,0 +1,131 @@
+{% extends 'head.html' %}
+{% load static %}
+
+	<!-- End Header Area -->
+	{% block content %}
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Edit Profile</h1>
+					<nav class="d-flex align-items-center">
+						<a href="index">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="{%url 'register'%}">Register</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Login Box Area =================-->
+	
+    <div class="billing_details>
+        <div class="row">
+            <div  style="margin-left: 50px;" class="col-lg-8">
+                    <h3>Personal Details</h3>
+                    <form  action="{% url 'editprofile' %}" method="post">
+                        {% csrf_token %}
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" placeholder="FirstName" class="form-control" id="firstname" name="firstname">
+                            
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" placeholder="LastName" class="form-control" id="lastname" name="lastname">
+
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="text" placeholder="Number" class="form-control" id="contact_no" name="contact_no">
+                        </div>
+                        <div class="col-md-6 form-group p_star">
+                            <input type="email" placeholder="Email" class="form-control" value="{{uid.email}}" id="email" name="name" disabled>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+            <div class="billing_details>
+                <div class="row">
+                    <div  style="margin-left: 50px;" class="col-lg-8">
+                        <h3>Address Details</h3>
+                        <!-- <form class="row contact_form" action="{% url 'editprofile' %}" method="post" novalidate="novalidate">
+                            {% csrf_token %} -->
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" placeholder="Address Line 1" class="form-control" id="address" name="address">
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" placeholder="Address Line 2" class="form-control" id="address" name="address">                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" placeholder="City" class="form-control" id="city" name="city">
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" placeholder="State" class="form-control" id="state" name="state">
+                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" placeholder="Country" class="form-control" id="country" name="country">                            </div>
+                            <div class="col-md-6 form-group p_star">
+                                <input type="text" placeholder="Pincode" class="form-control" id="pincode" name="pincode">
+                            </div>
+                            <br>
+                            <a style="font-size: 15px; margin-left: 12px;" class="genric-btn success circle">Save Details</Details></a>  
+                        </form>
+                       
+                    </div>
+                </div>        
+            </div>
+            
+        </section>    
+        <br>
+    		
+				<!-- <div class="col-lg-6">
+					<div class="login_form_inner">
+                        {%if msg%}
+                        <div class="alert alert-danger" role="alert">
+                            {{msg}}
+                          </div>
+                        {%endif%}  
+						<h3>Register to be a Member</h3>
+						
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="firstname" placeholder="Firstname" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="lastname" placeholder="Lastname" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+							</div>
+                            <div class="col-md-12 form-group">
+								<input type="email" class="form-control" id="name" name="email" placeholder="Email" >
+							</div> 
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="primary-btn">Register</button>
+								
+							</div> -->
+					
+	</section>
+    <!-- <script>
+        function validate(){
+            var regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
+            var name = document.getElementById('firstname').value;
+            if(!regName.test(name))
+            {
+                document.getElementById("fname").innerHTML = "First Name must contains only alphabats";
+                document.getElementById('name').focus();
+                return false;
+            }
+            else
+            {    
+                return true;
+            }
+        }
+        </script> -->
+        
+    <!--================End Login Box Area =================-->
+
+    {% endblock %}
+
+
+
+
+
+
