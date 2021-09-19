@@ -1,11 +1,16 @@
-from django.conf.urls import url
-from django.db.models import base
-from django.db.models.fields import EmailField, URLField
-from django.db.models.fields.files import ImageField, ImageFieldFile
-from django.http import request
-from django.urls.resolvers import URLPattern
+# from karmaapp import karma_panel
+# from karmaapp.karmaapp.settings import TEMPLATES
+# from django.conf.urls import url
+# from django.db.models import base
+# from django.db.models.fields import EmailField, URLField
+# from django.db.models.fields.files import ImageField, ImageFieldFile
+# from django.http import request
+# from django.urls.resolvers import URLPattern
+# from django.utils import html
+from django.http.response import HttpResponse
 from .models import *
 from .utils import *
+
 import random
 from django.shortcuts import render,redirect,get_list_or_404
 
@@ -145,128 +150,68 @@ def editprofile(request):
     if 'email' in request.session:
         uid=user.objects.get(email=request.session['email'])
         if request.method=='POST':
-            status=[]
-            #char=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-            lstnum=[1,2,3,4,5,6,7,8,9,0]
             firstname=request.POST['firstname']
             lastname=request.POST['lastname']
-            email=request.POST['email']
-            contact_no=request.POST['contact_no']
+            contactno=request.POST['contactno']
+            
             address=request.POST['address']
             city=request.POST['city']
             state=request.POST['state']
             country=request.POST['country']
             pincode=request.POST['pincode']
-
-            for i in firstname:
-                if  (ord(i) >=65 and ord(i)<=90 ) or (ord(i)>=97 and ord(i)<=122):
-                #if i in char:
-                    status.append(1)
-                else:
-                    status.append(0)
-                    break
-            
-            for i in lastname:
-                if (ord(i) >=65 and ord(i)<=90 ) or (ord(i)>=97 and ord(i)<=122):
-                #if i in char:
-                    status.append(1)
-                else:
-                    status.append(0)
-                    break
-
-            # uid.email=email
-            # uid.save()
-
-            for i in contact_no:
-                if int(i) in lstnum:
-                    status.append(1)
-                else:
-                    status.append(0)
-                    break
-            
-            #uid.address=address
-            #uid.save()
-
-            for i in city:
-                if (ord(i) >=65 and ord(i)<=90 ) or (ord(i)>=97 and ord(i)<=122):
-                #if i in char:
-                    status.append(1)
-                else:
-                    status.append(0)
-                    break
-            
-            for i in state:
-                if (ord(i) >=65 and ord(i)<=90 ) or (ord(i)>=97 and ord(i)<=122):
-                #if i in char:
-                    status.append(1)
-                else:
-                    status.append(0)
-                    break
-            
-            for i in country:
-                if (ord(i) >=65 and ord(i)<=90 ) or (ord(i)>=97 and ord(i)<=122):
-                #if i in char:
-                    status.append(1)
-                else:
-                    status.append(0)
-                    break
-                
-            if len(pincode)==6:
-                for i in pincode:
-                    if int(i) in lstnum:
-                        status.append(1)
-                    else:
-                        status.append(0)
-                        break
-              
-                        
-            print(status) 
-
-            if 0 in  status:
-                print("=======\n","Invalid Details","\n=======")
-                msg="Invalid Details!"
-                return render(request,'editprofile.html',{'msg':msg,'name':uid.email,'uid':uid})                
-            else:
+        
+            if uid:
                 uid.firstname=firstname
                 uid.lastname=lastname
-                uid.email=email
-                uid.contact_no=contact_no
-                uid.address=address                    
+                uid.contactno=contactno
+                uid.email=uid.email
+                uid.address=address
                 uid.city=city
                 uid.state=state
                 uid.country=country
                 uid.pincode=pincode
+                #uid=user.objects.create(firstname=firstname,lastname=lastname,email=uid.email,contactno=contactno,address=address,city=city,state=state,country=country,pincode=pincode)
                 uid.save()
-                print("=======\n","Details Updated Successfully","\n=======")
-                msg="Details Updated Successfully!"
-                return render(request,'index.html',{'msg':msg,'name':uid.email,'uid':uid})        
-        else:
-            return render(request,'editprofile.html',{'uid':uid,'name':uid.email})
-    else:
-        return render(request,'login.html')
-    
-def category(request,pk):
+                msg="Details Save Successfully"
+                return render(request,'index.html',{'msg':msg,'name':uid.email})
+            else:
+                msg="Invalid Details"
+                return render(request,'editprofile.html',{'msg':msg,'name':uid.email})
+        return render(request, 'editprofile.html', {'name':uid.email})     
+             
+def category(request):
     if 'email' in request.session:
         uid=user.objects.get(email=request.session['email'])
-        get_product_id=add_product.objects.filter(id=pk)    
+        #get_product_id=add_product.objects.filter(id=pk)    
         data=add_product.objects.all()
         return render(request, 'category.html',{'data':data,'name':uid.email})
     else:
         return render(request, 'login.html')
 
 def add_to_cart(request,pk):
+    # add to Cart => cart.save(pk)
     if 'email' in request.session:
         uid=user.objects.get(email=request.session['email'])
         get_product_id=add_product.objects.get(id=pk)
-        print("=====================\n",get_product_id,"\n========================")
-        if request.method=="POST":
-            p_name=request.POST['productname']
-            p_price=request.POST['price']
-            print(f"name={p_name}\n price={p_price}")
-            return render('category.html')
-        return render(request, 'category.html')
+
+        if get_product_id:
+            form = Cart(product=get_product_id)
+            form.save()
+            return render(request, 'category.html', {'get_product_id':get_product_id})
+        
+    
         
 def CartPage(request):
-    # get_cart=Cart.objects.all()
-    #return render(request, 'cart.html',{'cart':get_cart})
-    return render(request, 'cart.html')
+    if 'email' in request.session:
+        uid=user.objects.get(email=request.session['email'])
+        # get_product_id=add_product.objects.get(id=pk)
+        # print("=====================\n",get_product_id,"\n========================")
+        products = []
+        total = 0
+        carts=Cart.objects.all()
+        for cart in carts:
+            product = add_product.objects.get(id=cart.product_id)
+            products.append(product)
+            total += product.price
+    return render(request, 'cart.html',{'carts':products, 'totalPrice': total})
+    #return render(request, 'cart.html', {'get_product_id':get_product_id})

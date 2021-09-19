@@ -30,7 +30,7 @@ urlpatterns = [
     path('editprofile',views.editprofile,name="editprofile"),
     path('addproduct',views.addproduct,name="addproduct"),
     #path('category',views.category,name="category"),
-    path('category/<int:pk>',views.category,name="category"),
+    path('category',views.category,name="category"),
     path('add_to_cart/<int:pk>',views.add_to_cart,name="add_to_cart"),
     path('cart',views.CartPage,name="cart"),
 ]

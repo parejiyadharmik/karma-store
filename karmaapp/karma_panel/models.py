@@ -8,7 +8,7 @@ class user(models.Model):
     password=models.CharField(max_length=20)
     otp=models.IntegerField(default=1234)
     firstname=models.CharField(max_length=100)
-    contactno=models.BigIntegerField(null=True)
+    contactno=models.BigIntegerField( )
     lastname=models.CharField(max_length=100)
     email=models.EmailField(unique=True,null=True)
     address=models.CharField(max_length=100)
@@ -31,5 +31,5 @@ class add_product(models.Model):
     
 class Cart(models.Model):
     product =models.ForeignKey(add_product, on_delete=models.CASCADE)
-    total_quantity= models.CharField(max_length=100, default="quantity")
-    price= models.FloatField(max_length=100)
+    total_quantity= models.CharField(max_length=100,null=True, default="quantity")
+    price= models.FloatField(max_length=100,null=True)
